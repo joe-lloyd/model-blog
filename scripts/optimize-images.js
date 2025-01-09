@@ -3,7 +3,7 @@ const path = require("path");
 const sharp = require("sharp");
 
 const inputDir = path.join(__dirname, "../src/images");
-const outputDir = path.join(__dirname, "../public/optimized-images");
+const outputDir = path.join(__dirname, "../public/images");
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -11,27 +11,62 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // Sizes to generate
-const sizes = [400, 800, 1200]; // Thumbnail, medium, and large
+const sizes = {
+  thumbnail: 480, // Square thumbnails
+  small: 600,
+  medium: 800,
+  large: 1200,
+  extraLarge: 1920,
+};
 
-fs.readdir(inputDir, (err, files) => {
-  if (err) {
-    console.error("Error reading input directory:", err);
-    return;
-  }
+// Process images recursively, preserving folder structure
+function processImages(dir, subDir = "") {
+  const files = fs.readdirSync(dir);
 
   files.forEach((file) => {
-    const inputFile = path.join(inputDir, file);
-    const fileName = path.parse(file).name;
+    const inputPath = path.join(dir, file);
+    const stat = fs.statSync(inputPath);
 
-    sizes.forEach((size) => {
-      const outputFile = path.join(outputDir, `${fileName}-${size}.webp`);
+    if (stat.isDirectory()) {
+      // Process subdirectories
+      const subDirPath = path.join(subDir, file);
+      processImages(inputPath, subDirPath);
+    } else if (file.match(/\.(jpg|jpeg|png)$/i)) {
+      const postName = path.basename(dir); // Get post name from folder
+      const outputPath = path.join(outputDir, subDir);
 
-      sharp(inputFile)
-        .resize(size) // Resize to specified width
-        .webp({ quality: 80 }) // Convert to WebP
-        .toFile(outputFile)
-        .then(() => console.log(`Generated: ${outputFile}`))
-        .catch((err) => console.error(`Error processing ${file}:`, err));
-    });
+      // Ensure output subdirectory exists
+      if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath, { recursive: true });
+      }
+
+      const baseName = path.parse(file).name;
+
+      // Generate sizes
+      Object.entries(sizes).forEach(([sizeName, size]) => {
+        const outputFileName = `${baseName}-${sizeName}.webp`
+        const outputFile = path.join(outputPath, outputFileName);
+
+        let transformer = sharp(inputPath).webp({ quality: 80 });
+
+        if (sizeName === "thumbnail") {
+          // Crop and resize for square thumbnails
+          transformer = transformer.resize(size, size, {
+            fit: "cover",
+          });
+        } else {
+          // Resize normally
+          transformer = transformer.resize(size);
+        }
+
+        transformer
+          .toFile(outputFile)
+          .then(() => console.log(`Generated: ${outputFile}`))
+          .catch((err) => console.error(`Error processing ${file}:`, err));
+      });
+    }
   });
-});
+}
+
+// Start processing
+processImages(inputDir);
