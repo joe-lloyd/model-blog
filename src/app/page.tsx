@@ -15,9 +15,15 @@ const getPostPreviews = () => {
     const fileContents = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(fileContents);
 
+    // Extract the first image and replace with the thumbnail version
+    const image = data.images ? data.images[0] : null;
+    const thumbnail = image
+      ? `/images/${data.slug}/${path.basename(image, path.extname(image))}-thumbnail.webp`
+      : null;
+
     return {
       title: data.title,
-      image: data.images ? data.images[0] : null,
+      image: thumbnail, // Use thumbnail here
       slug: data.slug,
     };
   });
@@ -36,8 +42,8 @@ export default function Home() {
                 <Image
                   src={post.image}
                   alt={post.title}
-                  width={400}
-                  height={400}
+                  width={480}
+                  height={480}
                   className="object-cover"
                 />
               </div>

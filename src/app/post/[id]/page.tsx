@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       <h1>{metadata.title}</h1>
       <p>should be gallery</p>
       <MDXRemote source={content} />
-      <ImageGallery images={metadata.images} />
+      <ImageGallery imageNames={metadata.imageNames} slug={id} />
     </div>
   );
 }

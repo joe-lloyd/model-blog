@@ -29,7 +29,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-100 text-gray-900`}
     >
     <Hero />
-    <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
+    <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
+      {children}
+    </div>
     </body>
     </html>
   );
