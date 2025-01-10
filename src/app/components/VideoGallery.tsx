@@ -2,7 +2,7 @@
 
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
-import React, { useRef } from 'react';
+import React from 'react';
 
 interface VideoGalleryProps {
   videoNames: Array<string>;

@@ -47,12 +47,18 @@ function processImages(dir, subDir = "") {
       // Portrait flag
       const isPortrait = metadata.height > metadata.width;
 
-      console.log(`Processing: ${outputPath}, its isPortrait: ${isPortrait}`);
+      console.log(`Processing: ${inputPath}, its isPortrait: ${isPortrait}`);
 
       // Generate sizes
       Object.entries(sizes).forEach(([sizeName, size]) => {
         const outputFileName = `${baseName}-${sizeName}.webp`;
         const outputFile = path.join(outputPath, outputFileName);
+
+        // Skip processing if the output file already exists
+        if (fs.existsSync(outputFile)) {
+          console.log(`Skipping (already exists): ${outputFile}`);
+          return; // Skip to the next size
+        }
 
         let transformer = sharp(inputPath)
           .rotate() // Respect EXIF orientation
@@ -76,6 +82,5 @@ function processImages(dir, subDir = "") {
     }
   });
 }
-
 // Start processing
 processImages(inputDir);

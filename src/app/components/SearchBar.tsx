@@ -15,10 +15,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearchChange(e);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchChange(event);
 
-    const value = e.target.value.toLowerCase();
+    const value = event.target.value.toLowerCase();
     if (value) {
       const filtered = suggestions.filter((tag) =>
         tag.toLowerCase().includes(value)
@@ -30,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleTagClick = (tag: string) => {
-    onSearchChange({ target: { value: tag } } as any);
+    onSearchChange({ target: { value: tag } } as React.ChangeEvent<HTMLInputElement>);
     setFilteredSuggestions([]);
   };
 

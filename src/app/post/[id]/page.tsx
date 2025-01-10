@@ -7,11 +7,12 @@ import Hero from '@/app/components/Hero';
 import React from 'react';
 import VideoGallery from '@/app/components/VideoGallery';
 import TitleWithUnderline from '@/app/components/TitleWithUnderline';
+import { MDXComponents } from 'mdx/types';
 
 const contentDirectory = path.join(process.cwd(), 'src/content');
 
-const overrideComponents = {
-  p: (props: any) => (
+const overrideComponents: MDXComponents = {
+  p: (props) => (
     <p {...props} className="text-gray-700 pt-5 pb-10 text-2xl">{props.children}</p>
   ),
 };

@@ -16,6 +16,12 @@ const resolution = 720;
 // Convert video to WebM
 function convertToWebM(inputPath, outputPath, resolution) {
   return new Promise((resolve, reject) => {
+    if (fs.existsSync(outputPath)) {
+      console.log(`Skipping (already exists): ${outputPath}`);
+      resolve(); // Skip processing if file exists
+      return;
+    }
+
     const cmd = `ffmpeg -i "${inputPath}" -vf scale=-1:${resolution} -c:v libvpx-vp9 -b:v 1M -c:a libopus "${outputPath}"`;
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
@@ -31,6 +37,12 @@ function convertToWebM(inputPath, outputPath, resolution) {
 // Generate a 1-second preview video (no sound)
 function generatePreview(inputPath, outputPath) {
   return new Promise((resolve, reject) => {
+    if (fs.existsSync(outputPath)) {
+      console.log(`Skipping Preview (already exists): ${outputPath}`);
+      resolve(); // Skip processing if file exists
+      return;
+    }
+
     const cmd = `ffmpeg -i "${inputPath}" -t 1 -vf "scale=-1:480,crop=480:480" -an -c:v libvpx-vp9 -b:v 1M "${outputPath}"`;
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
