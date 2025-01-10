@@ -7,7 +7,7 @@ import PostsWrapper from '@/app/components/PostsWrapper';
 
 const contentDirectory = path.join(process.cwd(), 'src/content');
 
-export const getPostPreviews = () => {
+const getPostPreviews = () => {
   const fileNames = fs.readdirSync(contentDirectory);
 
   const posts = fileNames.map((fileName) => {
@@ -19,7 +19,7 @@ export const getPostPreviews = () => {
 
     const imageNames = metadata.imageNames || [];
     const thumbnail = imageNames.length
-      ? `/images/${id}/${imageNames[0]}-thumbnail.webp`
+      ? `/images/${id}/${imageNames[0].name}-thumbnail.webp`
       : null;
 
     return {

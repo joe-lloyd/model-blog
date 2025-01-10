@@ -27,7 +27,7 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
                 alt={post.title}
                 width={480}
                 height={480}
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
             )}
             <div

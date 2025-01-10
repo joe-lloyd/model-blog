@@ -23,7 +23,7 @@ const sizes = {
 function processImages(dir, subDir = "") {
   const files = fs.readdirSync(dir);
 
-  files.forEach((file) => {
+  files.forEach(async (file) => {
     const inputPath = path.join(dir, file);
     const stat = fs.statSync(inputPath);
 
@@ -32,7 +32,6 @@ function processImages(dir, subDir = "") {
       const subDirPath = path.join(subDir, file);
       processImages(inputPath, subDirPath);
     } else if (file.match(/\.(jpg|jpeg|png)$/i)) {
-      const postName = path.basename(dir);
       const outputPath = path.join(outputDir, subDir);
 
       // Ensure output subdirectory exists
@@ -42,21 +41,31 @@ function processImages(dir, subDir = "") {
 
       const baseName = path.parse(file).name;
 
+      // Read image metadata to determine orientation and dimensions
+      const metadata = await sharp(inputPath).metadata();
+
+      // Portrait flag
+      const isPortrait = metadata.height > metadata.width;
+
+      console.log(`Processing: ${outputPath}, its isPortrait: ${isPortrait}`);
+
       // Generate sizes
       Object.entries(sizes).forEach(([sizeName, size]) => {
-        const outputFileName = `${baseName}-${sizeName}.webp`
+        const outputFileName = `${baseName}-${sizeName}.webp`;
         const outputFile = path.join(outputPath, outputFileName);
 
-        let transformer = sharp(inputPath).webp({ quality: 80 });
+        let transformer = sharp(inputPath)
+          .rotate() // Respect EXIF orientation
+          .webp({ quality: 80 });
 
         if (sizeName === "thumbnail") {
           // Crop and resize for square thumbnails
-          transformer = transformer.resize(size, size, {
-            fit: "cover",
-          });
+          transformer = transformer.resize(size, size, { fit: "cover" });
         } else {
-          // Resize normally
-          transformer = transformer.resize(size);
+          // Resize normally, adjusting for portrait images
+          transformer = isPortrait
+            ? transformer.resize({ height: size })
+            : transformer.resize({ width: size });
         }
 
         transformer

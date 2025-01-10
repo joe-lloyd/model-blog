@@ -6,7 +6,7 @@ import Image from 'next/image';
 import React from 'react';
 
 interface ImageGalleryProps {
-  imageNames: Array<string>;
+  imageNames: Array<{ name: string; portrait?: boolean }>;
   slug: string;
 }
 
@@ -14,7 +14,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ imageNames, slug }) => {
   return (
     <Gallery>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {imageNames.map((name, index) => {
+        {imageNames.map(({ name, portrait = false }, index) => {
           const thumbnail = `/images/${slug}/${name}-thumbnail.webp`;
           const smallImage = `/images/${slug}/${name}-small.webp`;
           const mediumImage = `/images/${slug}/${name}-medium.webp`;
@@ -28,14 +28,18 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ imageNames, slug }) => {
             ${smallImage} 480w
           `.trim();
 
+          // Adjust width and height for portrait images
+          const width = portrait ? 1440 : 1920;
+          const height = portrait ? 1920 : 1440;
+
           return (
-            <Item<HTMLImageElement>
+            <Item
               key={index}
               original={extraLargeImage}
               originalSrcset={originalSrcset}
               thumbnail={thumbnail}
-              width={1920}
-              height={1440}
+              width={width}
+              height={height}
             >
               {({ ref, open }) => (
                 <div
