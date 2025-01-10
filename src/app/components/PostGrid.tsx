@@ -31,7 +31,7 @@ const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
               />
             )}
             <div
-              className="absolute bottom-0 p-2 bg-gray-700 bg-opacity-80 w-full"
+              className="absolute bottom-0 p-2 bg-gray-700 bg-opacity-60 w-full"
               style={{ maxWidth: "480px" }}
             >
               <h2 className="text-lg text-white font-semibold">{post.title}</h2>
