@@ -11,7 +11,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ title, description }) => {
   return (
     <div
-      className="relative bg-gradient-to-r from-fuchsia-500 via-pink-500 to-fuchsia-500 text-white flex items-center justify-center"
+      className="relative mb-10 bg-gradient-to-r from-fuchsia-500 via-pink-500 to-fuchsia-500 text-white flex items-center justify-center"
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>

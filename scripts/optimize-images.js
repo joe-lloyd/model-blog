@@ -32,7 +32,7 @@ function processImages(dir, subDir = "") {
       const subDirPath = path.join(subDir, file);
       processImages(inputPath, subDirPath);
     } else if (file.match(/\.(jpg|jpeg|png)$/i)) {
-      const postName = path.basename(dir); // Get post name from folder
+      const postName = path.basename(dir);
       const outputPath = path.join(outputDir, subDir);
 
       // Ensure output subdirectory exists
