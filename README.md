@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![Netlify Status](https://api.netlify.com/api/v1/badges/49e9650f-1906-419b-862f-43a60c7c531b/deploy-status)](https://app.netlify.com/sites/model-blog/deploys)
+
+# Model Blog
+
+This is a blog for the Model project. It is built with Next.js and Tailwind CSS. The goal is to just build a JAM stack blog that is easy to maintain and update.
+It will hopefully give me motivation to paint more models.
 
 ## Getting Started
 
@@ -16,21 +21,13 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Assets
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Check out the script folder for 2 useful scripts, one is for image optimization and one is for videos.
+I just use simple JS scripts to do this, so you can run them with Node. For videos you may need to install ffmpeg.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The content for the app is organised in MDX files. This basically let me have a serverless CMS.
+I use the frontmatter to store metadata about the posts like tags, date etc.
