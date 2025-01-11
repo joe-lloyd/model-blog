@@ -42,5 +42,7 @@ next-env.d.ts
 
 src/images
 src/videos
+public/images/
+public/videos/
 
 .idea

@@ -11,15 +11,16 @@ interface ImageGalleryProps {
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ imageNames, slug }) => {
+  console.log(process.env.NEXT_PUBLIC_AWS_S3_BUCKET);
   return (
     <Gallery>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {imageNames.map(({ name, portrait = false }, index) => {
-          const thumbnail = `/images/${slug}/${name}-thumbnail.webp`;
-          const smallImage = `/images/${slug}/${name}-small.webp`;
-          const mediumImage = `/images/${slug}/${name}-medium.webp`;
-          const largeImage = `/images/${slug}/${name}-large.webp`;
-          const extraLargeImage = `/images/${slug}/${name}-extraLarge.webp`;
+          const thumbnail = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${slug}/${name}-thumbnail.webp`;
+          const smallImage = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${slug}/${name}-small.webp`;
+          const mediumImage = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${slug}/${name}-medium.webp`;
+          const largeImage = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${slug}/${name}-large.webp`;
+          const extraLargeImage = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${slug}/${name}-extraLarge.webp`;
 
           const originalSrcset = `
             ${extraLargeImage} 1920w,

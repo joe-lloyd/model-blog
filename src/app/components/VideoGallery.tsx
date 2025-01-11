@@ -14,8 +14,8 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videoNames, slug }) => {
     <Gallery>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {videoNames.map((name, index) => {
-          const videoPath = `/videos/${slug}/${name}.webm`;
-          const previewPath = `/videos/${slug}/${name}-preview.webm`;
+          const videoPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}.webm`;
+          const previewPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}-preview.webm`;
 
           return (
             <Item

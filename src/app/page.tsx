@@ -19,7 +19,7 @@ const getPostPreviews = () => {
 
     const imageNames = metadata.imageNames || [];
     const thumbnail = imageNames.length
-      ? `/images/${id}/${imageNames[0].name}-thumbnail.webp`
+      ? `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${imageNames[0].name}-thumbnail.webp`
       : null;
 
     return {

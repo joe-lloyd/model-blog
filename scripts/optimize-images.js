@@ -1,9 +1,9 @@
-const fs = require("fs");
-const path = require("path");
-const sharp = require("sharp");
+const fs = require('fs');
+const path = require('path');
+const sharp = require('sharp');
 
-const inputDir = path.join(__dirname, "../src/images");
-const outputDir = path.join(__dirname, "../public/images");
+const inputDir = path.join(__dirname, '../src/images');
+const outputDir = path.join(__dirname, '../public/images');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -20,18 +20,18 @@ const sizes = {
 };
 
 // Process images recursively, preserving folder structure
-function processImages(dir, subDir = "") {
+async function processImages(dir, subDir = '') {
   const files = fs.readdirSync(dir);
-
-  files.forEach(async (file) => {
+  const promises = files.map(async (file) => {
     const inputPath = path.join(dir, file);
     const stat = fs.statSync(inputPath);
 
     if (stat.isDirectory()) {
       // Process subdirectories
       const subDirPath = path.join(subDir, file);
-      processImages(inputPath, subDirPath);
-    } else if (file.match(/\.(jpg|jpeg|png)$/i)) {
+      return processImages(inputPath, subDirPath);
+    }
+    else if (file.match(/\.(jpg|jpeg|png)$/i)) {
       const outputPath = path.join(outputDir, subDir);
 
       // Ensure output subdirectory exists
@@ -47,40 +47,56 @@ function processImages(dir, subDir = "") {
       // Portrait flag
       const isPortrait = metadata.height > metadata.width;
 
-      console.log(`Processing: ${inputPath}, its isPortrait: ${isPortrait}`);
+      console.log(`Processing: ${inputPath}, isPortrait: ${isPortrait}`);
 
       // Generate sizes
-      Object.entries(sizes).forEach(([sizeName, size]) => {
+      const sizePromises = Object.entries(sizes).map(async ([sizeName, size]) => {
         const outputFileName = `${baseName}-${sizeName}.webp`;
         const outputFile = path.join(outputPath, outputFileName);
 
         // Skip processing if the output file already exists
-        if (fs.existsSync(outputFile)) {
-          console.log(`Skipping (already exists): ${outputFile}`);
-          return; // Skip to the next size
-        }
+        // if (fs.existsSync(outputFile)) {
+        //   console.log(`Skipping (already exists): ${outputFile}`);
+        //   return; // Skip to the next size
+        // }
 
         let transformer = sharp(inputPath)
           .rotate() // Respect EXIF orientation
           .webp({ quality: 80 });
 
-        if (sizeName === "thumbnail") {
+        if (sizeName === 'thumbnail') {
           // Crop and resize for square thumbnails
-          transformer = transformer.resize(size, size, { fit: "cover" });
-        } else {
+          transformer = transformer.resize(size, size, { fit: 'cover' });
+        }
+        else {
           // Resize normally, adjusting for portrait images
           transformer = isPortrait
             ? transformer.resize({ height: size })
             : transformer.resize({ width: size });
         }
 
-        transformer
+        return transformer
           .toFile(outputFile)
           .then(() => console.log(`Generated: ${outputFile}`))
           .catch((err) => console.error(`Error processing ${file}:`, err));
       });
+
+      // Wait for all sizes to finish processing
+      return Promise.all(sizePromises);
     }
   });
+
+  // Wait for all files in this directory to finish processing
+  return Promise.all(promises);
 }
-// Start processing
-processImages(inputDir);
+
+// Start processing and measure time
+console.time('Total Processing Time');
+processImages(inputDir)
+  .then(() => {
+    console.timeEnd('Total Processing Time');
+    console.log('Image processing completed!');
+  })
+  .catch((err) => {
+    console.error('Error during image processing:', err);
+  });

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "optimize-images": "node scripts/optimize-images.js",
-    "optimize-videos": "node scripts/optimize-videos.js"
+    "optimize-videos": "node scripts/optimize-videos.js",
+    "upload": "node scripts/upload-to-s3.js"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -26,6 +27,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "aws-sdk": "^2.1692.0",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
     "postcss": "^8",
