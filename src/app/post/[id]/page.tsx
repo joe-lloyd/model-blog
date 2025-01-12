@@ -10,11 +10,12 @@ import TitleWithUnderline from '@/app/components/TitleWithUnderline';
 import { MDXComponents } from 'mdx/types';
 import type { Metadata, ResolvingMetadata } from 'next';
 
-type Props = {
-  params: { id: string };
-};
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
 const contentDirectory = path.join(process.cwd(), 'src/content');
+
 function getPostData(id: string) {
   const filePath = path.join(contentDirectory, `${id}.mdx`);
 
@@ -26,8 +27,8 @@ function getPostData(id: string) {
 }
 
 export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
+  { params }: PageProps,
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { id } = await params;
 
@@ -35,7 +36,7 @@ export async function generateMetadata(
   const { metadata } = getPostData(id);
 
   // Construct the image URL dynamically
-  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${metadata.imageNames[0]}-small.webp`;
+  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${metadata.imageNames[0].name}-small.webp`;
 
   // Construct the post URL
   const url = `https://minis.joe-lloyd.com/post/${id}`;
@@ -77,7 +78,7 @@ const overrideComponents: MDXComponents = {
 };
 
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
   const { content, metadata } = getPostData(id);
