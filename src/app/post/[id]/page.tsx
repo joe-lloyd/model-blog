@@ -8,15 +8,13 @@ import React from 'react';
 import VideoGallery from '@/app/components/VideoGallery';
 import TitleWithUnderline from '@/app/components/TitleWithUnderline';
 import { MDXComponents } from 'mdx/types';
+import type { Metadata, ResolvingMetadata } from 'next';
 
-const contentDirectory = path.join(process.cwd(), 'src/content');
-
-const overrideComponents: MDXComponents = {
-  p: (props) => (
-    <p {...props} className="text-gray-700 pt-5 pb-10 text-2xl">{props.children}</p>
-  ),
+type Props = {
+  params: { id: string };
 };
 
+const contentDirectory = path.join(process.cwd(), 'src/content');
 function getPostData(id: string) {
   const filePath = path.join(contentDirectory, `${id}.mdx`);
 
@@ -26,6 +24,58 @@ function getPostData(id: string) {
 
   return { content, metadata };
 }
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { id } = await params;
+
+  // Fetch post data (content and metadata)
+  const { metadata } = getPostData(id);
+
+  // Construct the image URL dynamically
+  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${metadata.imageNames[0]}-small.webp`;
+
+  // Construct the post URL
+  const url = `https://minis.joe-lloyd.com/post/${id}`;
+
+  // Optionally access parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: metadata.title,
+    description: metadata.description,
+    openGraph: {
+      title: metadata.title,
+      description: metadata.description,
+      url,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `Image for ${metadata.title}`,
+        },
+        ...previousImages, // Retain any parent metadata images if necessary
+      ],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: metadata.title,
+      description: metadata.description,
+      images: [image],
+    },
+  };
+}
+
+const overrideComponents: MDXComponents = {
+  p: (props) => (
+    <p {...props} className="text-gray-700 pt-5 pb-10 text-2xl">{props.children}</p>
+  ),
+};
+
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

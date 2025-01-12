@@ -11,13 +11,13 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ title, description }) => {
   return (
     <div
-      className="relative mb-10 bg-gradient-to-r from-fuchsia-500 via-pink-500 to-fuchsia-500 text-white flex items-center justify-center"
+      className="relative mb-10 bg-gradient-to-r from-fuchsia-500 via-pink-500 to-fuchsia-500 text-white"
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
       {/* Home Link */}
-      <div className="absolute top-4 right-4 z-10">
+      <div className="relative text-end p-4 w-full">
         <Link
           href="/"
           className="bg-white text-fuchsia-500 px-4 py-2 rounded-full font-semibold shadow-md hover:bg-gray-100 transition"
@@ -25,6 +25,7 @@ const Hero: React.FC<HeroProps> = ({ title, description }) => {
           Home
         </Link>
       </div>
+
 
       {/* Content */}
       <div className="relative z-10 text-center p-8">
