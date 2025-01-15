@@ -40,9 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-src/images
-src/videos
-public/images/
-public/videos/
+scripts/media-in
+scripts/media-out
 
 .idea
