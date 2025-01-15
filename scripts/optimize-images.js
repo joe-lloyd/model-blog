@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const inputDir = path.join(__dirname, '../src/images');
-const outputDir = path.join(__dirname, '../public/images');
+const inputDir = path.join(__dirname, './media-in/images');
+const outputDir = path.join(__dirname, './media-out/images');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -55,10 +55,10 @@ async function processImages(dir, subDir = '') {
         const outputFile = path.join(outputPath, outputFileName);
 
         // Skip processing if the output file already exists
-        // if (fs.existsSync(outputFile)) {
-        //   console.log(`Skipping (already exists): ${outputFile}`);
-        //   return; // Skip to the next size
-        // }
+        if (fs.existsSync(outputFile)) {
+          console.log(`Skipping (already exists): ${outputFile}`);
+          return; // Skip to the next size
+        }
 
         let transformer = sharp(inputPath)
           .rotate() // Respect EXIF orientation

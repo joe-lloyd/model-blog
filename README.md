@@ -23,8 +23,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Assets
 
-Check out the script folder for 2 useful scripts, one is for image optimization and one is for videos.
+Check out the script folder for 3 useful scripts, one is for image optimization and one is for videos.
 I just use simple JS scripts to do this, so you can run them with Node. For videos you may need to install ffmpeg.
+After the optimize scripts are run you can then push the files to the s3 bucket on aws.
 
 
 ## Content

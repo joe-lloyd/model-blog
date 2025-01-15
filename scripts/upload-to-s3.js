@@ -2,22 +2,42 @@ const fs = require('fs');
 const path = require('path');
 const AWS = require('aws-sdk');
 
-// Configure AWS S3
+
 const s3 = new AWS.S3({
   region: 'eu-central-1',
 });
 
-// Bucket name
+
 const bucketName = 'modelblogbucket';
 
-// Directories to upload
+
 const directories = {
-  images: path.join(__dirname, '../public/images'),
-  videos: path.join(__dirname, '../public/videos'),
+  images: path.join(__dirname, './media-out/images'),
+  videos: path.join(__dirname, './media-out/videos'),
 };
 
-// Function to upload a single file
-const uploadFile = (filePath, s3Path) => {
+
+const fileExistsInS3 = async (s3Path) => {
+  try {
+    await s3.headObject({ Bucket: bucketName, Key: s3Path }).promise();
+    return true;
+  } catch (err) {
+    if (err.code === 'NotFound') {
+      return false;
+    }
+    throw err;
+  }
+};
+
+
+const uploadFile = async (filePath, s3Path) => {
+  const exists = await fileExistsInS3(s3Path);
+
+  if (exists) {
+    console.log(`Skipping ${filePath} (already exists in S3)`);
+    return;
+  }
+
   return new Promise((resolve, reject) => {
     const fileStream = fs.createReadStream(filePath);
 
@@ -28,7 +48,7 @@ const uploadFile = (filePath, s3Path) => {
 
     const params = {
       Bucket: bucketName,
-      Key: s3Path, // S3 object key (folder path in bucket)
+      Key: s3Path,
       Body: fileStream,
       ContentType: getContentType(filePath),
     };
@@ -45,7 +65,7 @@ const uploadFile = (filePath, s3Path) => {
   });
 };
 
-// Function to determine MIME type
+
 const getContentType = (filePath) => {
   const ext = path.extname(filePath).toLowerCase();
   if (ext === '.jpg' || ext === '.jpeg') return 'image/jpeg';
@@ -55,35 +75,35 @@ const getContentType = (filePath) => {
   return 'application/octet-stream';
 };
 
-// Recursive function to upload all files in a directory
+
 const uploadDirectory = async (directoryPath, s3Folder) => {
   const files = fs.readdirSync(directoryPath);
 
   for (const file of files) {
     const fullPath = path.join(directoryPath, file);
-    const s3Path = path.join(s3Folder, file).replace(/\\/g, '/'); // For Windows compatibility
+    const s3Path = path.join(s3Folder, file).replace(/\\/g, '/');
 
     const stat = fs.statSync(fullPath);
     if (stat.isDirectory()) {
-      // Recurse into subdirectory
+
       await uploadDirectory(fullPath, s3Path);
     } else {
-      // Upload file
+
       await uploadFile(fullPath, s3Path);
     }
   }
 };
 
-// Main function
+
 const main = async () => {
   console.time('Upload Time');
 
   try {
-    // Upload images
+
     console.log('Uploading images...');
     await uploadDirectory(directories.images, 'images');
 
-    // Upload videos
+
     console.log('Uploading videos...');
     await uploadDirectory(directories.videos, 'videos');
 

@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
 
-const inputDir = path.join(__dirname, "../src/videos");
-const outputDir = path.join(__dirname, "../public/videos");
+const inputDir = path.join(__dirname, "./media-in/videos");
+const outputDir = path.join(__dirname, "./media-out/videos");
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
