@@ -26,7 +26,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videoNames, slug }) => {
                 <video
                   controls
                   src={videoPath}
-                  style={{ maxWidth: "720px"}}
+                  className="w-full aspect-video max-w-screen-md"
                 />
               </div>
               }

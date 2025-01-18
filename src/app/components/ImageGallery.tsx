@@ -38,7 +38,7 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ imageNames, slug }) => {
               key={index}
               original={extraLargeImage}
               originalSrcset={originalSrcset}
-              thumbnail={thumbnail}
+              thumbnail={smallImage}
               width={width}
               height={height}
             >
