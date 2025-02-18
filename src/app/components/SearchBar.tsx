@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import React, { useState } from "react";
 
@@ -41,12 +41,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholder="Search by tag..."
         value={searchTerm}
         onChange={handleInputChange}
-        className="w-full p-3 border rounded-md shadow focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+        className="w-full p-3 border rounded-md shadow dark:bg-zinc-500 dark:placeholder-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
       />
 
       {/* Dropdown Suggestions */}
       {filteredSuggestions.length > 0 && (
-        <ul className="absolute left-4 right-4 mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto z-10">
+        <ul className="absolute left-4 right-4 mt-1 bg-white dark:bg-zinc-700 border border-gray-300 rounded-md shadow-lg max-h-40 overflow-y-auto z-10">
           {filteredSuggestions.map((tag, index) => (
             <li
               key={index}

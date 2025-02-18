@@ -73,7 +73,7 @@ export async function generateMetadata(
 
 const overrideComponents: MDXComponents = {
   p: (props) => (
-    <p {...props} className="text-gray-700 pt-5 pb-10 text-2xl">{props.children}</p>
+    <p {...props} className="text-gray-700 dark:text-gray-200 pt-5 pb-10 text-2xl">{props.children}</p>
   ),
 };
 
@@ -87,7 +87,7 @@ export default async function Page({ params }: PageProps) {
     <div className="mb-8">
       <Hero title={metadata.title} description={metadata.description} />
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-gray-500 sm:pt-5 md:pt-8 lg:pt-10 text-xl">{metadata.date}</p>
+        <p className="text-gray-500 dark:text-gray-200 sm:pt-5 md:pt-8 lg:pt-10 text-xl">{metadata.date}</p>
         <MDXRemote source={content} components={overrideComponents} />
         {!!(metadata.videoNames && metadata.videoNames.length) && (
           <>

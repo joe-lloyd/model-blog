@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import React from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body
-      className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-100 text-gray-900`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-100 dark:bg-zinc-800 text-gray-900 dark:text-gray-400`}
     >
     {children}
     </body>

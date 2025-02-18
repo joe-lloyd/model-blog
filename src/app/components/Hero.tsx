@@ -46,7 +46,7 @@ const Hero: React.FC<HeroProps> = ({ title, description }) => {
             width={800}
             height={800}
             alt="Orc Warboss"
-            className="w-full max-w-sm md:max-w-md object-contain drop-shadow-2xl"
+            className="w-full max-w-sm md:max-w-md object-contain drop-shadow-2xl scale-[1.15] origin-bottom"
           />
         </div>
 
