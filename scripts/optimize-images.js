@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const inputDir = path.join(__dirname, './hero-in/images');
-const outputDir = path.join(__dirname, './hero-out/images');
+const inputDir = path.join(__dirname, './media-in/images');
+const outputDir = path.join(__dirname, './media-out/images');
 
 // Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
@@ -11,7 +11,7 @@ if (!fs.existsSync(outputDir)) {
 }
 // Sizes to generate
 const sizes = {
-  // thumbnail: 480, // Square thumbnails
+  thumbnail: 480, // Square thumbnails
   small: 600,
   medium: 800,
   large: 1200,

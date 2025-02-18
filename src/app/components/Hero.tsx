@@ -17,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ title, description }) => {
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black bg-opacity-40">
-        <Image src={"/images/background-extraLarge.webp"} alt="Background" layout="fill" objectFit="cover" />
+        <Image src={"/images/background-large.webp"} alt="Background" layout="fill" objectFit="cover" />
         <SparkEffect />
       </div>
 
