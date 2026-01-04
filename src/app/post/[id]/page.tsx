@@ -36,8 +36,11 @@ export async function generateMetadata(
   // Fetch post data (content and metadata)
   const { metadata } = getPostData(id);
 
-  // Construct the image URL dynamically
-  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${metadata.imageNames[0].name}-small.webp`;
+  // Use coverImage if it exists, otherwise fall back to the first image
+  const coverImageName =
+    metadata.coverImage ||
+    (metadata.imageNames && metadata.imageNames[0]?.name);
+  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${coverImageName}-small.webp`;
 
   // Construct the post URL
   const url = `https://minis.joe-lloyd.com/post/${id}`;
