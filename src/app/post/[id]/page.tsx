@@ -96,10 +96,13 @@ export default async function Page({ params }: PageProps) {
           {metadata.date}
         </p>
         <MDXRemote source={content} components={overrideComponents} />
-        {(metadata.airbrushPaints || metadata.brushPaints) && (
+        {(metadata.airbrushPaints ||
+          metadata.brushPaints ||
+          metadata.speedPaints) && (
           <PaintingRecipe
             airbrushPaints={metadata.airbrushPaints}
             brushPaints={metadata.brushPaints}
+            speedPaints={metadata.speedPaints}
           />
         )}
         {!!(metadata.videoNames && metadata.videoNames.length) && (
