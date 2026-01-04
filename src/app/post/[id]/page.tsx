@@ -1,25 +1,26 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import ImageGallery from '../../components/ImageGallery';
-import Hero from '@/app/components/Hero';
-import React from 'react';
-import VideoGallery from '@/app/components/VideoGallery';
-import TitleWithUnderline from '@/app/components/TitleWithUnderline';
-import { MDXComponents } from 'mdx/types';
-import type { Metadata, ResolvingMetadata } from 'next';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import ImageGallery from "../../components/ImageGallery";
+import Hero from "@/app/components/Hero";
+import React from "react";
+import VideoGallery from "@/app/components/VideoGallery";
+import TitleWithUnderline from "@/app/components/TitleWithUnderline";
+import PaintingRecipe from "@/app/components/PaintingRecipe";
+import { MDXComponents } from "mdx/types";
+import type { Metadata, ResolvingMetadata } from "next";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-const contentDirectory = path.join(process.cwd(), 'src/content');
+const contentDirectory = path.join(process.cwd(), "src/content");
 
 function getPostData(id: string) {
   const filePath = path.join(contentDirectory, `${id}.mdx`);
 
-  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const fileContents = fs.readFileSync(filePath, "utf8");
 
   const { content, data: metadata } = matter(fileContents);
 
@@ -28,7 +29,7 @@ function getPostData(id: string) {
 
 export async function generateMetadata(
   { params }: PageProps,
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { id } = await params;
 
@@ -60,10 +61,10 @@ export async function generateMetadata(
         },
         ...previousImages, // Retain any parent metadata images if necessary
       ],
-      type: 'article',
+      type: "article",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: metadata.title,
       description: metadata.description,
       images: [image],
@@ -73,10 +74,14 @@ export async function generateMetadata(
 
 const overrideComponents: MDXComponents = {
   p: (props) => (
-    <p {...props} className="text-gray-700 dark:text-gray-200 pt-5 pb-10 text-2xl">{props.children}</p>
+    <p
+      {...props}
+      className="text-gray-700 dark:text-gray-200 pt-5 pb-10 text-2xl"
+    >
+      {props.children}
+    </p>
   ),
 };
-
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
@@ -87,8 +92,16 @@ export default async function Page({ params }: PageProps) {
     <div className="mb-8">
       <Hero title={metadata.title} description={metadata.description} />
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-gray-500 dark:text-gray-200 sm:pt-5 md:pt-8 lg:pt-10 text-xl">{metadata.date}</p>
+        <p className="text-gray-500 dark:text-gray-200 sm:pt-5 md:pt-8 lg:pt-10 text-xl">
+          {metadata.date}
+        </p>
         <MDXRemote source={content} components={overrideComponents} />
+        {(metadata.airbrushPaints || metadata.brushPaints) && (
+          <PaintingRecipe
+            airbrushPaints={metadata.airbrushPaints}
+            brushPaints={metadata.brushPaints}
+          />
+        )}
         {!!(metadata.videoNames && metadata.videoNames.length) && (
           <>
             <TitleWithUnderline title="Videos" />
