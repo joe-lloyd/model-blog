@@ -17,13 +17,29 @@ const directories = {
   videos: path.join(__dirname, "./media-out/videos"),
 };
 
+const force = process.argv.includes("--force");
+const trackingFile = path.join(__dirname, "uploaded-files.json");
+
+let uploadedFiles = [];
+if (fs.existsSync(trackingFile)) {
+  try {
+    uploadedFiles = JSON.parse(fs.readFileSync(trackingFile, "utf8"));
+  } catch (err) {
+    console.error("Error reading tracking file:", err.message);
+  }
+}
+
+const saveTracking = () => {
+  fs.writeFileSync(trackingFile, JSON.stringify(uploadedFiles, null, 2));
+};
+
 const fileExistsInS3 = async (s3Path) => {
   try {
     await s3Client.send(
       new HeadObjectCommand({
         Bucket: bucketName,
         Key: s3Path,
-      })
+      }),
     );
     return true;
   } catch (err) {
@@ -35,11 +51,24 @@ const fileExistsInS3 = async (s3Path) => {
 };
 
 const uploadFile = async (filePath, s3Path) => {
-  const exists = await fileExistsInS3(s3Path);
+  const isPreviouslyUploaded = uploadedFiles.includes(s3Path);
 
-  if (exists) {
-    console.log(`Skipping ${filePath} (already exists in S3)`);
+  if (isPreviouslyUploaded && !force) {
+    console.log(`Skipping ${filePath} (already in tracking)`);
     return;
+  }
+
+  // If not in tracking, check S3 (unless force is on)
+  if (!force) {
+    const exists = await fileExistsInS3(s3Path);
+    if (exists) {
+      console.log(`Skipping ${filePath} (already exists in S3)`);
+      if (!isPreviouslyUploaded) {
+        uploadedFiles.push(s3Path);
+        saveTracking();
+      }
+      return;
+    }
   }
 
   try {
@@ -54,6 +83,11 @@ const uploadFile = async (filePath, s3Path) => {
 
     await s3Client.send(command);
     console.log(`Uploaded ${filePath} to s3://${bucketName}/${s3Path}`);
+
+    if (!uploadedFiles.includes(s3Path)) {
+      uploadedFiles.push(s3Path);
+      saveTracking();
+    }
   } catch (err) {
     console.error(`Error uploading file ${filePath}:`, err.message);
     throw err;
@@ -104,7 +138,7 @@ const main = async () => {
     if (err.name === "CredentialsProviderError") {
       console.error("\n⚠️  AWS Credentials not found!");
       console.error(
-        "Please check ~/.aws/credentials or set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables."
+        "Please check ~/.aws/credentials or set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.",
       );
     }
   }

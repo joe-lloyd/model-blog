@@ -11,6 +11,7 @@ interface PaintingRecipeProps {
   airbrushPaints?: Paint[];
   brushPaints?: Paint[];
   speedPaints?: Paint[];
+  washes?: Paint[];
 }
 
 // Helper to lighten/darken colors for shading
@@ -273,7 +274,7 @@ const HoneycombGrid = ({ paints }: { paints: Paint[] }) => {
               rowsCount={rowsCount}
               paintsCount={paintsCount}
             />
-          ))
+          )),
         )}
       </div>
     </div>
@@ -284,8 +285,9 @@ export default function PaintingRecipe({
   airbrushPaints,
   brushPaints,
   speedPaints,
+  washes,
 }: PaintingRecipeProps) {
-  if (!airbrushPaints && !brushPaints && !speedPaints) {
+  if (!airbrushPaints && !brushPaints && !speedPaints && !washes) {
     return null;
   }
 
@@ -364,6 +366,29 @@ export default function PaintingRecipe({
                 </h3>
               </div>
               <HoneycombGrid paints={speedPaints} />
+            </div>
+          )}
+
+          {/* Washes section */}
+          {washes && washes.length > 0 && (
+            <div className="bg-slate-50 dark:bg-gray-900/40 rounded-[1.5rem] p-6 sm:p-8 border border-gray-100 dark:border-gray-800 shadow-xl overflow-visible">
+              <div className="flex items-center gap-3 mb-8 justify-center sm:justify-start">
+                <div className="p-2.5 bg-orange-100 dark:bg-orange-900/50 rounded-xl shadow-inner">
+                  <svg
+                    className="w-6 h-6 text-orange-600 dark:text-orange-400"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-black text-gray-900 dark:text-gray-100 uppercase tracking-widest">
+                  Washes
+                </h3>
+              </div>
+              <HoneycombGrid paints={washes} />
             </div>
           )}
         </div>

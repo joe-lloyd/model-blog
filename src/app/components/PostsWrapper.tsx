@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import SearchBar from "./SearchBar";
@@ -25,13 +25,13 @@ const PostsWrapper: React.FC<PostsWrapperProps> = ({ posts, tags }) => {
     setSearchTerm(value);
 
     const filtered = posts.filter((post) =>
-      post.tags.some((tag) => tag.toLowerCase().includes(value))
+      post.tags.some((tag) => tag.toLowerCase().includes(value)),
     );
     setFilteredPosts(filtered);
   };
 
   return (
-    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-screen-2xl mx-auto px-0 lg:px-8">
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}

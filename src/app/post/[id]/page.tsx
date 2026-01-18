@@ -29,7 +29,7 @@ function getPostData(id: string) {
 
 export async function generateMetadata(
   { params }: PageProps,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { id } = await params;
 
@@ -98,16 +98,6 @@ export default async function Page({ params }: PageProps) {
         <p className="text-gray-500 dark:text-gray-200 sm:pt-5 md:pt-8 lg:pt-10 text-xl">
           {metadata.date}
         </p>
-        <MDXRemote source={content} components={overrideComponents} />
-        {(metadata.airbrushPaints ||
-          metadata.brushPaints ||
-          metadata.speedPaints) && (
-          <PaintingRecipe
-            airbrushPaints={metadata.airbrushPaints}
-            brushPaints={metadata.brushPaints}
-            speedPaints={metadata.speedPaints}
-          />
-        )}
         {!!(metadata.videoNames && metadata.videoNames.length) && (
           <>
             <TitleWithUnderline title="Videos" />
@@ -116,6 +106,18 @@ export default async function Page({ params }: PageProps) {
         )}
         <TitleWithUnderline title="Images" />
         <ImageGallery imageNames={metadata.imageNames} slug={id} />
+        <MDXRemote source={content} components={overrideComponents} />
+        {(metadata.airbrushPaints ||
+          metadata.brushPaints ||
+          metadata.speedPaints ||
+          metadata.washes) && (
+          <PaintingRecipe
+            airbrushPaints={metadata.airbrushPaints}
+            brushPaints={metadata.brushPaints}
+            speedPaints={metadata.speedPaints}
+            washes={metadata.washes}
+          />
+        )}
       </div>
     </div>
   );
