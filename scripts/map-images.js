@@ -59,9 +59,13 @@ async function mapMedia() {
         const cleanName = cleanImageName(file);
         if (!imageMap.has(cleanName)) {
           let isPortrait = false;
+          let mtime = 0;
           try {
+            const stats = fs.statSync(path.join(folderPath, file));
+            mtime = stats.mtimeMs;
+
             const metadata = await sharp(
-              path.join(folderPath, file)
+              path.join(folderPath, file),
             ).metadata();
             if (metadata.orientation && metadata.orientation >= 5) {
               isPortrait = metadata.width > metadata.height;
@@ -71,10 +75,43 @@ async function mapMedia() {
           } catch (err) {
             console.warn(`Could not read metadata for ${file}: ${err.message}`);
           }
-          imageMap.set(cleanName, { name: cleanName, portrait: isPortrait });
+          imageMap.set(cleanName, {
+            name: cleanName,
+            portrait: isPortrait,
+            mtime,
+          });
         }
       }
-      uniqueImages = Array.from(imageMap.values());
+
+      // Sort images based on timestamp in name or mtime fallback
+      uniqueImages = Array.from(imageMap.values()).sort((a, b) => {
+        const parseTimestamp = (name) => {
+          const match = name.match(
+            /^(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})$/,
+          );
+          if (match) {
+            return new Date(
+              `${match[1]}-${match[2]}-${match[3]}T${match[4]}:${match[5]}:${match[6]}`,
+            ).getTime();
+          }
+          return null;
+        };
+
+        const tsA = parseTimestamp(a.name);
+        const tsB = parseTimestamp(b.name);
+
+        if (tsA !== null && tsB !== null) return tsA - tsB;
+        if (tsA !== null) return 1; // Timestamps go last
+        if (tsB !== null) return -1;
+
+        // If both are numbers, sort numerically
+        const numA = parseInt(a.name);
+        const numB = parseInt(b.name);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+
+        // Fallback to mtime
+        return a.mtime - b.mtime;
+      });
     }
 
     // Process Videos
@@ -114,7 +151,7 @@ async function mapMedia() {
       const updatedMdx = matter.stringify(content, data);
       fs.writeFileSync(mdxPath, updatedMdx);
       console.log(
-        `Updated ${slug}.mdx: ${uniqueImages.length} images, ${uniqueVideos.length} videos.`
+        `Updated ${slug}.mdx: ${uniqueImages.length} images, ${uniqueVideos.length} videos.`,
       );
     }
   }
