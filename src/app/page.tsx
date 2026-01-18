@@ -56,12 +56,25 @@ const getPostPreviews = () => {
       ? `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${coverImageName}-thumbnail.webp`
       : null;
 
+    const stat = fs.statSync(filePath);
+
     return {
       title: metadata.title,
       image: thumbnail,
       slug: id,
       tags: metadata.tags || [],
+      date: metadata.date,
+      mtime: stat.mtime.getTime(),
     };
+  });
+
+  // Sort posts by date descending, then by mtime descending
+  posts.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    const diff = dateB.getTime() - dateA.getTime();
+    if (diff !== 0) return diff;
+    return b.mtime - a.mtime;
   });
 
   const uniqueTags = Array.from(new Set(posts.flatMap((post) => post.tags)));
