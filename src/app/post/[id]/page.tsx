@@ -10,6 +10,14 @@ import TitleWithUnderline from "@/app/components/TitleWithUnderline";
 import PaintingRecipe from "@/app/components/PaintingRecipe";
 import { MDXComponents } from "mdx/types";
 import type { Metadata, ResolvingMetadata } from "next";
+import paintsData from "@/data/paints.json";
+
+interface Paint {
+  name: string;
+  brand: string;
+  range?: string;
+  color?: string;
+}
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -40,13 +48,19 @@ export async function generateMetadata(
   const coverImageName =
     metadata.coverImage ||
     (metadata.imageNames && metadata.imageNames[0]?.name);
-  const image = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${coverImageName}-small.webp`;
 
-  // Construct the post URL
-  const url = `https://minis.joe-lloyd.com/post/${id}`;
-
-  // Optionally access parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
+  const images = [];
+  if (coverImageName) {
+    const s3Bucket = process.env.NEXT_PUBLIC_AWS_S3_BUCKET;
+    // Use extraLarge for the highest quality social sharing card
+    const imageUrl = `${s3Bucket}/images/${id}/${coverImageName}-extraLarge.webp`;
+    images.push({
+      url: imageUrl,
+      width: 1200,
+      height: 630,
+      alt: metadata.title,
+    });
+  }
 
   return {
     title: metadata.title,
@@ -54,23 +68,14 @@ export async function generateMetadata(
     openGraph: {
       title: metadata.title,
       description: metadata.description,
-      url,
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: `Image for ${metadata.title}`,
-        },
-        ...previousImages, // Retain any parent metadata images if necessary
-      ],
+      images: images.length > 0 ? images : undefined,
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
       title: metadata.title,
       description: metadata.description,
-      images: [image],
+      images: images.length > 0 ? [images[0].url] : undefined,
     },
   };
 }
@@ -78,18 +83,32 @@ export async function generateMetadata(
 const overrideComponents: MDXComponents = {
   p: (props) => (
     <p
-      {...props}
       className="text-gray-700 dark:text-gray-200 pt-5 pb-10 text-2xl"
+      {...props}
     >
       {props.children}
     </p>
   ),
 };
 
+const paints = paintsData as Record<string, Paint>;
+
+function resolvePaints(paintKeys?: string[]): Paint[] | undefined {
+  if (!paintKeys || !Array.isArray(paintKeys)) return undefined;
+  return paintKeys
+    .map((key) => paints[key])
+    .filter((paint): paint is Paint => !!paint);
+}
+
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
 
   const { content, metadata } = getPostData(id);
+
+  const airbrushPaints = resolvePaints(metadata.airbrushPaints);
+  const brushPaints = resolvePaints(metadata.brushPaints);
+  const speedPaints = resolvePaints(metadata.speedPaints);
+  const washes = resolvePaints(metadata.washes);
 
   return (
     <div className="mb-8">
@@ -107,15 +126,12 @@ export default async function Page({ params }: PageProps) {
         <TitleWithUnderline title="Images" />
         <ImageGallery imageNames={metadata.imageNames} slug={id} />
         <MDXRemote source={content} components={overrideComponents} />
-        {(metadata.airbrushPaints ||
-          metadata.brushPaints ||
-          metadata.speedPaints ||
-          metadata.washes) && (
+        {(airbrushPaints || brushPaints || speedPaints || washes) && (
           <PaintingRecipe
-            airbrushPaints={metadata.airbrushPaints}
-            brushPaints={metadata.brushPaints}
-            speedPaints={metadata.speedPaints}
-            washes={metadata.washes}
+            airbrushPaints={airbrushPaints}
+            brushPaints={brushPaints}
+            speedPaints={speedPaints}
+            washes={washes}
           />
         )}
       </div>

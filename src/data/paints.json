@@ -1,0 +1,158 @@
+{
+  "matt-gray-ap": {
+    "name": "Matt Gray",
+    "brand": "Army Painter",
+    "color": "#6B7280"
+  },
+  "matt-white-ap": {
+    "name": "Matt White",
+    "brand": "Army Painter",
+    "color": "#F9FAFB"
+  },
+  "white-ap": {
+    "name": "White",
+    "brand": "Army Painter",
+    "color": "#F9FAFB"
+  },
+  "grim-black-ap-speed": {
+    "name": "Grim Black",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#1A1A1A"
+  },
+  "hardened-leather-ap-speed": {
+    "name": "Hardened Leather",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#8B4513"
+  },
+  "absolution-green-ap-speed": {
+    "name": "Absolution Green",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#006400"
+  },
+  "satchel-brown-ap-speed": {
+    "name": "Satchel Brown",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#7B3F00"
+  },
+  "plate-mail-metal-ap": {
+    "name": "Plate Mail Metal",
+    "brand": "Army Painter",
+    "color": "#A5A9B4"
+  },
+  "barbarian-flesh-ap": {
+    "name": "Barbarian Flesh",
+    "brand": "Army Painter",
+    "color": "#F78C5A"
+  },
+  "uniform-grey-ap": {
+    "name": "Uniform Grey",
+    "brand": "Army Painter",
+    "color": "#7C8286"
+  },
+  "dark-tone-ap-wash": {
+    "name": "Dark Tone",
+    "brand": "Army Painter",
+    "color": "#1A1A1A"
+  },
+  "skeleton-bone-ap": {
+    "name": "Skeleton Bone",
+    "brand": "Army Painter",
+    "color": "#E6D5B8"
+  },
+  "greedy-gold-ap": {
+    "name": "Greedy Gold",
+    "brand": "Army Painter",
+    "color": "#C9A347"
+  },
+  "talisman-teal-ap": {
+    "name": "Talisman Teal",
+    "brand": "Army Painter",
+    "color": "#008B8B"
+  },
+  "plasmatic-bolt-ap-speed": {
+    "name": "Plasmatic Bolt",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#00b2a9"
+  },
+  "dark-wood-ap-speed": {
+    "name": "Dark Wood",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#3d2b1f"
+  },
+  "pallid-bone-ap-speed": {
+    "name": "Pallid Bone",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#e3dac9"
+  },
+  "noble-skin-ap-speed": {
+    "name": "Noble Skin",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#be8b6e"
+  },
+  "pure-red-apa": {
+    "name": "Pure Red",
+    "brand": "Army Painter Air",
+    "color": "#e21c22"
+  },
+  "matt-black-apa": {
+    "name": "Matt Black",
+    "brand": "Army Painter Air",
+    "color": "#212121"
+  },
+  "matt-grey-apa": {
+    "name": "Matt Grey",
+    "brand": "Army Painter Air",
+    "color": "#6b7280"
+  },
+  "pure-red-ap": {
+    "name": "Pure Red",
+    "brand": "Army Painter",
+    "color": "#e21c22"
+  },
+  "uniform-grey-ap-alt": {
+    "name": "Uniform Grey",
+    "brand": "Army Painter",
+    "color": "#858d91"
+  },
+  "barbarian-flesh-ap-alt": {
+    "name": "Barbarian Flesh",
+    "brand": "Army Painter",
+    "color": "#e8b49b"
+  },
+  "opal-skin-ap": {
+    "name": "Opal Skin",
+    "brand": "Army Painter",
+    "color": "#d1f7f0"
+  },
+  "gravelord-gray-ap-speed": {
+    "name": "Gravelord Gray",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#424242"
+  },
+  "blood-red-ap-speed": {
+    "name": "Blood Red",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#9a1c1f"
+  },
+  "crusader-skin-ap-speed": {
+    "name": "Crusader Skin",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#bb816c"
+  },
+  "flesh-wash-ap-wash": {
+    "name": "Flesh Wash",
+    "brand": "Army Painter",
+    "color": "#764b3b"
+  }
+}

@@ -106,7 +106,7 @@ techniques:
 
 ### Image Workflow
 
-1. Place original images in a directory
+1. Place original images in a subdirectory matching the post's `slug` within `scripts/media-in/images/` (e.g., `scripts/media-in/images/my-project-slug/`)
 2. Run the optimization script:
 
    ```bash
@@ -123,7 +123,7 @@ techniques:
 
 ### Video Workflow
 
-1. Place original videos in a directory
+1. Place original videos in a subdirectory matching the post's `slug` within `scripts/media-in/videos/` (e.g., `scripts/media-in/videos/my-project-slug/`)
 2. Run the video optimization script:
 
    ```bash
