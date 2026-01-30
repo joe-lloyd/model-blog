@@ -57,9 +57,43 @@ async function mapMedia() {
 
       for (const file of files) {
         const cleanName = cleanImageName(file);
-        if (!imageMap.has(cleanName)) {
-          let isPortrait = false;
-          let mtime = 0;
+
+        let isPortrait = false;
+        let width = 0;
+        let height = 0;
+        let mtime = 0;
+
+        // Try to read dimensions from processed output file first (media-out)
+        // This is safer as it represents exactly what the user sees
+        const processedPath = path.join(
+          __dirname,
+          "media-out/images",
+          slug,
+          `${cleanName}-extraLarge.webp`,
+        );
+
+        let loadedFromProcessed = false;
+
+        try {
+          if (fs.existsSync(processedPath)) {
+            const metadata = await sharp(processedPath).metadata();
+            width = metadata.width;
+            height = metadata.height;
+            loadedFromProcessed = true;
+
+            // Processed files should already be rotated, but we check orientation just in case
+            if (metadata.orientation && metadata.orientation >= 5) {
+              const temp = width;
+              width = height;
+              height = temp;
+            }
+            isPortrait = width < height;
+          }
+        } catch (err) {
+          // Ignore error reading processed file, fallback to source
+        }
+
+        if (!loadedFromProcessed) {
           try {
             const stats = fs.statSync(path.join(folderPath, file));
             mtime = stats.mtimeMs;
@@ -67,18 +101,48 @@ async function mapMedia() {
             const metadata = await sharp(
               path.join(folderPath, file),
             ).metadata();
+
+            width = metadata.width;
+            height = metadata.height;
+
             if (metadata.orientation && metadata.orientation >= 5) {
-              isPortrait = metadata.width > metadata.height;
+              // Swap width and height for rotated images (e.g. 90deg or 270deg)
+              const temp = width;
+              width = height;
+              height = temp;
+              isPortrait = width < height; // effectively true usually
             } else {
-              isPortrait = metadata.height > metadata.width;
+              isPortrait = height > width;
             }
           } catch (err) {
             console.warn(`Could not read metadata for ${file}: ${err.message}`);
           }
+        }
+
+        const existing = imageMap.get(cleanName);
+
+        // If it's the first time seeing this image, or if this file is explicitly the 'extraLarge' version
+        // or if we find a larger version than what we currently have
+        // (Note: if loadedFromProcessed is true, we have the definitive dimensions already, but we still need mtime from source or loop)
+        // If loadedFromProcessed is true, we should overwrite whatever we have because it is "truth".
+
+        const shouldUpdate =
+          !existing ||
+          file.includes("extraLarge") ||
+          activeIsBigger(width, existing.width) ||
+          loadedFromProcessed;
+
+        function activeIsBigger(w, existingW) {
+          return (w || 0) > (existingW || 0);
+        }
+
+        if (shouldUpdate) {
           imageMap.set(cleanName, {
             name: cleanName,
             portrait: isPortrait,
-            mtime,
+            mtime: existing ? existing.mtime : mtime, // keep original mtime if available
+            width,
+            height,
           });
         }
       }
@@ -134,7 +198,12 @@ async function mapMedia() {
     if (uniqueImages.length > 0) {
       data.imageNames = uniqueImages.map((img) => {
         const entry = { name: img.name };
-        if (img.portrait) entry.portrait = true;
+        // Clean up portrait property as we use explicit width/height
+
+        // Add dimensions
+        if (img.width) entry.width = img.width;
+        if (img.height) entry.height = img.height;
+
         return entry;
       });
       data.coverImage = uniqueImages[uniqueImages.length - 1].name;
