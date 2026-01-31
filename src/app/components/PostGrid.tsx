@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -6,6 +6,8 @@ interface Post {
   title: string;
   image: string | null;
   slug: string;
+  width?: number;
+  height?: number;
 }
 
 interface PostGridProps {
@@ -13,31 +15,59 @@ interface PostGridProps {
 }
 
 const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
+  const [columns, setColumns] = useState(1);
+
+  useEffect(() => {
+    const updateColumns = () => {
+      if (window.innerWidth >= 1024) {
+        setColumns(3);
+      } else if (window.innerWidth >= 640) {
+        setColumns(2);
+      } else {
+        setColumns(1);
+      }
+    };
+
+    updateColumns();
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
+  }, []);
+
+  // Distribute posts into columns
+  const columnWrapper: Post[][] = Array.from({ length: columns }, () => []);
+
+  posts.forEach((post, index) => {
+    columnWrapper[index % columns].push(post);
+  });
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-      {posts.map((post, idx) => (
-        <Link key={idx} href={`/post/${post.slug}`}>
-          <div
-            className="relative bg-white shadow-md rounded-md overflow-hidden border hover:shadow-lg transition group"
-            style={{ maxWidth: "480px" }}
-          >
-            {post.image && (
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={480}
-                height={480}
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            )}
-            <div
-              className="absolute bottom-0 p-2 bg-gray-700 bg-opacity-60 w-full"
-              style={{ maxWidth: "480px" }}
-            >
-              <h2 className="text-lg text-white font-semibold">{post.title}</h2>
-            </div>
-          </div>
-        </Link>
+    <div className="flex gap-4 p-4">
+      {columnWrapper.map((colPosts, colIndex) => (
+        <div key={colIndex} className="flex flex-col flex-1 gap-4">
+          {colPosts.map((post) => (
+            <Link key={post.slug} href={`/post/${post.slug}`}>
+              <div className="relative group w-full overflow-hidden rounded-lg shadow-md">
+                {post.image && (
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    width={post.width || 600}
+                    height={post.height || 400}
+                    className="w-full h-auto block transform transition-transform duration-500 group-hover:scale-110"
+                    priority={
+                      posts.indexOf(post) < 4
+                    } /* Good practice for above-fold LCP */
+                  />
+                )}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-12">
+                  <h2 className="text-white font-bold text-lg drop-shadow-md group-hover:text-amber-200 transition-colors duration-300">
+                    {post.title}
+                  </h2>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       ))}
     </div>
   );

@@ -52,15 +52,31 @@ const getPostPreviews = () => {
     const coverImageName =
       metadata.coverImage ||
       (metadata.imageNames && metadata.imageNames[0]?.name);
-    const thumbnail = coverImageName
-      ? `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${coverImageName}-thumbnail.webp`
-      : null;
+
+    let thumbnail = null;
+    let width = 600; // Default fallback
+    let height = 400; // Default fallback
+
+    if (coverImageName) {
+      thumbnail = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/images/${id}/${coverImageName}-small.webp`;
+
+      // Find the image metadata to get accurate dimensions
+      const imageMeta = metadata.imageNames?.find(
+        (img: any) => img.name === coverImageName,
+      );
+      if (imageMeta) {
+        width = imageMeta.width;
+        height = imageMeta.height;
+      }
+    }
 
     const stat = fs.statSync(filePath);
 
     return {
       title: metadata.title,
       image: thumbnail,
+      width,
+      height,
       slug: id,
       tags: metadata.tags || [],
       date: metadata.date,

@@ -9,6 +9,8 @@ interface Post {
   image: string | null;
   slug: string;
   tags: string[];
+  width?: number;
+  height?: number;
 }
 
 interface PostsWrapperProps {
