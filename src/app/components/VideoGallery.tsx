@@ -54,16 +54,23 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videoNames, slug }) => {
               const videoPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}.webm`;
               const previewPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}-preview.webm`;
 
+              const originalWidth =
+                typeof video !== "string" && video.width ? video.width : 1920;
+              const originalHeight =
+                typeof video !== "string" && video.height ? video.height : 1080;
+
               return (
                 <Item
                   key={name}
                   original={videoPath}
+                  width={originalWidth}
+                  height={originalHeight}
                   content={
-                    <div className="flex justify-center items-center h-full">
+                    <div className="flex justify-center items-center h-full w-full">
                       <video
                         controls
                         src={videoPath}
-                        className="w-full aspect-video max-w-screen-md"
+                        className="max-h-screen max-w-full object-contain"
                       />
                     </div>
                   }
