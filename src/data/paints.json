@@ -117,6 +117,12 @@
     "brand": "Army Painter",
     "color": "#e21c22"
   },
+  "slaughter-red-ap-speed": {
+    "name": "Slaughter Red",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#9a1c1f"
+  },
   "uniform-grey-ap-alt": {
     "name": "Uniform Grey",
     "brand": "Army Painter",
