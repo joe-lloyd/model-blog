@@ -80,6 +80,8 @@ export async function generateMetadata(
   };
 }
 
+import RecipeBlock from "@/app/components/RecipeBlock";
+
 const overrideComponents: MDXComponents = {
   p: (props) => (
     <p
@@ -89,6 +91,7 @@ const overrideComponents: MDXComponents = {
       {props.children}
     </p>
   ),
+  RecipeBlock,
 };
 
 const paints = paintsData as Record<string, Paint>;

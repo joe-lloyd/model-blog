@@ -154,5 +154,21 @@
     "name": "Flesh Wash",
     "brand": "Army Painter",
     "color": "#764b3b"
+  },
+  "worn-stone-ap": {
+    "name": "Worn Stone",
+    "brand": "Army Painter",
+    "color": "#c4bfb1"
+  },
+  "moody-mauve-ap-speed": {
+    "name": "Moody Mauve",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#A37379"
+  },
+  "strong-tone-ap-wash": {
+    "name": "Strong Tone",
+    "brand": "Army Painter",
+    "color": "#3b2826"
   }
 }

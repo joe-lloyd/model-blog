@@ -55,6 +55,28 @@ function generatePreview(inputPath, outputPath) {
   });
 }
 
+// Generate a high quality poster image (first frame)
+function generatePoster(inputPath, outputPath) {
+  return new Promise((resolve, reject) => {
+    if (fs.existsSync(outputPath)) {
+      console.log(`Skipping Poster (already exists): ${outputPath}`);
+      resolve(); // Skip processing if file exists
+      return;
+    }
+
+    // Extract first frame, full resolution, high quality webp
+    const cmd = `ffmpeg -i "${inputPath}" -vframes 1 -q:v 2 "${outputPath}"`;
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) {
+        reject(`Error generating poster for ${inputPath}: ${stderr}`);
+      } else {
+        console.log(`Generated Poster: ${outputPath}`);
+        resolve(stdout);
+      }
+    });
+  });
+}
+
 function processVideos(dir, subDir = "") {
   const files = fs.readdirSync(dir);
 
@@ -88,6 +110,14 @@ function processVideos(dir, subDir = "") {
       const previewOutput = path.join(outputPath, `${baseName}-preview.webm`);
       try {
         await generatePreview(inputPath, previewOutput);
+      } catch (err) {
+        console.error(err);
+      }
+
+      // Poster output
+      const posterOutput = path.join(outputPath, `${baseName}-poster.webp`);
+      try {
+        await generatePoster(inputPath, posterOutput);
       } catch (err) {
         console.error(err);
       }

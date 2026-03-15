@@ -4,8 +4,15 @@ import "photoswipe/dist/photoswipe.css";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import React from "react";
 
+interface VideoData {
+  name: string;
+  poster?: string;
+  width?: number;
+  height?: number;
+}
+
 interface VideoGalleryProps {
-  videoNames: Array<string>;
+  videoNames: Array<string | VideoData>;
   slug: string;
 }
 
@@ -28,8 +35,7 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videoNames, slug }) => {
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
 
-  // Distribute videos into columns
-  const columnWrapper: Array<string[]> = Array.from(
+  const columnWrapper: Array<Array<string | VideoData>> = Array.from(
     { length: columns },
     () => [],
   );
@@ -43,7 +49,8 @@ const VideoGallery: React.FC<VideoGalleryProps> = ({ videoNames, slug }) => {
       <div className="flex gap-4">
         {columnWrapper.map((colVideos, colIndex) => (
           <div key={colIndex} className="flex flex-col flex-1 gap-4">
-            {colVideos.map((name, index) => {
+            {colVideos.map((video, index) => {
+              const name = typeof video === "string" ? video : video.name;
               const videoPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}.webm`;
               const previewPath = `${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}/videos/${slug}/${name}-preview.webm`;
 

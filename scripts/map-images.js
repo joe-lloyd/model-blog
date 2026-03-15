@@ -185,7 +185,40 @@ async function mapMedia() {
       const vFiles = fs
         .readdirSync(videoFolderPath)
         .filter((f) => f.match(/\.(mp4|webm|mov)$/i));
-      uniqueVideos = [...new Set(vFiles.map(cleanVideoName))];
+
+      const videoNamesList = [...new Set(vFiles.map(cleanVideoName))];
+
+      for (const vName of videoNamesList) {
+        let width = 0;
+        let height = 0;
+
+        // Try to read dimensions from the generated poster in media-out
+        const posterPath = path.join(
+          __dirname,
+          "media-out/videos",
+          slug,
+          `${vName}-poster.webp`,
+        );
+
+        if (fs.existsSync(posterPath)) {
+          try {
+            const metadata = await sharp(posterPath).metadata();
+            width = metadata.width;
+            height = metadata.height;
+          } catch (err) {
+            console.warn(
+              `Could not read metadata for video poster ${vName}: ${err.message}`,
+            );
+          }
+        }
+
+        uniqueVideos.push({
+          name: vName,
+          poster: `${vName}-poster.webp`,
+          width,
+          height,
+        });
+      }
     }
 
     // Read MDX
@@ -210,7 +243,7 @@ async function mapMedia() {
       updated = true;
     }
 
-    // Update videoNames (as Array<string> to match VideoGallery)
+    // Update videoNames
     if (uniqueVideos.length > 0) {
       data.videoNames = uniqueVideos;
       updated = true;
