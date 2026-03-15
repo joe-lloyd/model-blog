@@ -7,11 +7,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://minis.joe-lloyd.com"),
   title: {
-    default: "Joe's Painted Models",
+    default: "Joe's Painted Models — Miniature Painting Gallery",
     template: "%s | Joe's Painted Models",
   },
   description:
-    "A place where I can post my painting projects, hopefully inspiring myself to paint more.",
+    "Joe's miniature painting projects — Warhammer 40k, fantasy models, grimdark conversions and more. Browse the gallery and get inspired to paint your own collection.",
   openGraph: {
     siteName: "Joe's Painted Models",
     type: "website",

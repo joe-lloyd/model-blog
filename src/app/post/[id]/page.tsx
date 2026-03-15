@@ -52,12 +52,12 @@ export async function generateMetadata(
   const images = [];
   if (coverImageName) {
     const s3Bucket = process.env.NEXT_PUBLIC_AWS_S3_BUCKET;
-    // Use extraLarge for the highest quality social sharing card
-    const imageUrl = `${s3Bucket}/images/${id}/${coverImageName}-extraLarge.webp`;
+    // Use small for social sharing — well under WhatsApp's 600KB limit
+    const imageUrl = `${s3Bucket}/images/${id}/${coverImageName}-small.webp`;
     images.push({
       url: imageUrl,
-      width: 1200,
-      height: 630,
+      width: 600,
+      height: 450,
       alt: metadata.title,
     });
   }

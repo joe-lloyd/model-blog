@@ -8,33 +8,33 @@ import { Metadata } from "next";
 const contentDirectory = path.join(process.cwd(), "src/content");
 
 export const metadata: Metadata = {
-  title: "Joe's Painted Models",
+  title: "Joe's Painted Models — Miniature Painting Gallery",
   description:
-    "A place where I can post my painting projects, hopefully inspiring myself to paint more.",
+    "Joe's miniature painting projects — Warhammer 40k, fantasy models, grimdark conversions and more. Browse the gallery and get inspired to paint your own collection.",
   metadataBase: new URL("https://minis.joe-lloyd.com"),
   openGraph: {
-    title: "Joe's Painted Models",
+    title: "Joe's Painted Models — Miniature Painting Gallery",
     description:
-      "A place where I can post my painting projects, hopefully inspiring myself to paint more.",
+      "Joe's miniature painting projects — Warhammer 40k, fantasy models, grimdark conversions and more. Browse the gallery and get inspired to paint your own collection.",
     url: "https://minis.joe-lloyd.com",
     siteName: "Joe's Painted Models",
     images: [
       {
-        url: "https://modelblogbucket.s3.eu-central-1.amazonaws.com/images/40k-darkelves-vehicles/6-extraLarge.webp",
-        width: 1200,
-        height: 630,
-        alt: "Joe's Painted Models showcase banner",
+        url: "https://modelblogbucket.s3.eu-central-1.amazonaws.com/images/40k-darkelves-vehicles/6-small.webp",
+        width: 600,
+        height: 450,
+        alt: "Joe's Painted Models — Miniature Painting Gallery",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Joe's Painted Models",
+    title: "Joe's Painted Models — Miniature Painting Gallery",
     description:
-      "A place where I can post my painting projects, hopefully inspiring myself to paint more.",
+      "Joe's miniature painting projects — Warhammer 40k, fantasy models, grimdark conversions and more. Browse the gallery and get inspired to paint your own collection.",
     images: [
-      "https://modelblogbucket.s3.eu-central-1.amazonaws.com/images/40k-darkelves-vehicles/6-extraLarge.webp",
+      "https://modelblogbucket.s3.eu-central-1.amazonaws.com/images/40k-darkelves-vehicles/6-small.webp",
     ],
   },
 };
