@@ -176,5 +176,16 @@
     "name": "Strong Tone",
     "brand": "Army Painter",
     "color": "#3b2826"
+  },
+  "orc-skin-ap-speed": {
+    "name": "Orc Skin",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#2D5A27"
+  },
+  "military-shade-ap-wash": {
+    "name": "Military Shader",
+    "brand": "Army Painter",
+    "color": "#4B5320"
   }
 }
