@@ -11,8 +11,8 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "optimize-images": "node scripts/optimize-images.js",
     "optimize-videos": "node scripts/optimize-videos.js",
+    "optimize-images": "node scripts/optimize-images.js",
     "upload": "node scripts/upload-to-s3.js",
     "map-media": "node scripts/map-images.js"
   },

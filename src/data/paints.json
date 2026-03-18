@@ -77,30 +77,30 @@
     "name": "Plasmatic Bolt",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#00b2a9"
+    "color": "#00B2A9"
   },
   "dark-wood-ap-speed": {
     "name": "Dark Wood",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#3d2b1f"
+    "color": "#3D2B1F"
   },
   "pallid-bone-ap-speed": {
     "name": "Pallid Bone",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#e3dac9"
+    "color": "#E3DAC9"
   },
   "noble-skin-ap-speed": {
     "name": "Noble Skin",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#be8b6e"
+    "color": "#BE8B6E"
   },
   "pure-red-apa": {
     "name": "Pure Red",
     "brand": "Army Painter Air",
-    "color": "#e21c22"
+    "color": "#E21C22"
   },
   "matt-black-apa": {
     "name": "Matt Black",
@@ -110,33 +110,33 @@
   "matt-grey-apa": {
     "name": "Matt Grey",
     "brand": "Army Painter Air",
-    "color": "#6b7280"
+    "color": "#6B7280"
   },
   "pure-red-ap": {
     "name": "Pure Red",
     "brand": "Army Painter",
-    "color": "#e21c22"
+    "color": "#E21C22"
   },
   "slaughter-red-ap-speed": {
     "name": "Slaughter Red",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#9a1c1f"
+    "color": "#9A1C1F"
   },
   "uniform-grey-ap-alt": {
     "name": "Uniform Grey",
     "brand": "Army Painter",
-    "color": "#858d91"
+    "color": "#858D91"
   },
   "barbarian-flesh-ap-alt": {
     "name": "Barbarian Flesh",
     "brand": "Army Painter",
-    "color": "#e8b49b"
+    "color": "#E8B49B"
   },
   "opal-skin-ap": {
     "name": "Opal Skin",
     "brand": "Army Painter",
-    "color": "#d1f7f0"
+    "color": "#D1F7F0"
   },
   "gravelord-gray-ap-speed": {
     "name": "Gravelord Gray",
@@ -148,23 +148,23 @@
     "name": "Blood Red",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#9a1c1f"
+    "color": "#9A1C1F"
   },
   "crusader-skin-ap-speed": {
     "name": "Crusader Skin",
     "brand": "Army Painter",
     "range": "Speedpaint",
-    "color": "#bb816c"
+    "color": "#BB816C"
   },
   "flesh-wash-ap-wash": {
     "name": "Flesh Wash",
     "brand": "Army Painter",
-    "color": "#764b3b"
+    "color": "#764B3B"
   },
   "worn-stone-ap": {
     "name": "Worn Stone",
     "brand": "Army Painter",
-    "color": "#c4bfb1"
+    "color": "#C4BFB1"
   },
   "moody-mauve-ap-speed": {
     "name": "Moody Mauve",
@@ -175,7 +175,7 @@
   "strong-tone-ap-wash": {
     "name": "Strong Tone",
     "brand": "Army Painter",
-    "color": "#3b2826"
+    "color": "#3B2826"
   },
   "orc-skin-ap-speed": {
     "name": "Orc Skin",
@@ -187,5 +187,23 @@
     "name": "Military Shader",
     "brand": "Army Painter",
     "color": "#4B5320"
+  },
+  "hive-dweller-purple-ap-speed": {
+    "name": "Hive Dweller Purple",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#5D2E8E"
+  },
+  "magic-blue-ap-speed": {
+    "name": "Magic Blue",
+    "brand": "Army Painter",
+    "range": "Speedpaint",
+    "color": "#005696"
+  },
+  "arctic-gem-ap": {
+    "name": "Arctic Gem",
+    "brand": "Army Painter",
+    "range": "Warpaints Fanatic",
+    "color": "#78ADCE"
   }
 }
