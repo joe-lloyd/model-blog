@@ -14,7 +14,8 @@
     "optimize-videos": "node scripts/optimize-videos.js",
     "optimize-images": "node scripts/optimize-images.js",
     "upload": "node scripts/upload-to-s3.js",
-    "map-media": "node scripts/map-images.js"
+    "map-media": "node scripts/map-images.js",
+    "process-media": "npm run optimize-videos && npm run optimize-images && npm run upload && npm run map-media"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.962.0",
